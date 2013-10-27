@@ -1,0 +1,74 @@
+<element name="app-sampler">
+  <template>
+    <!-- TODO: Get our own CSS file. -->
+    <link rel="stylesheet" href="{{ASSET_HOST}}/assets/style/app-sampler.css">
+    <div class="sampler">
+      <audio id="sampler-audio" class="sampler-audio"></audio>
+      <button id="record-button" type="button">Record</button>
+      <button id="stop-button" type="button">Stop</button>
+      <button id="send-button" type="button">Send</button>
+    </div>
+  </template>
+  <description>
+    Samples sound from your device.
+  </description>
+  <thumbnail>
+    <!-- TODO: Get our own picture. -->
+    <img src="{{ASSET_HOST}}/assets/images/thumbnails/app-button.png" />
+  </thumbnail>
+  <script type="text/flathead">
+  </script>
+  <script type="text/ceci">
+    Ceci(this, {
+      init: function (params) {
+        this.audioStream = null;
+
+        navigator.mozGetUserMedia({
+          audio: true,
+          video: false
+        },
+        function(localAudioStream) {
+          this.audioStream = localAudioStream;
+        },
+        function(err) {
+          console.log("Error getting the audio stream: " + err.message);
+        });
+
+        this.samplerAudio = this.querySelector("#sampler-audio");
+
+        var t = this,
+            recordButton = this.querySelector("#record-button");
+        recordButton.onclick = function(e) {
+          t.record();
+        };
+
+        var stop = this.querySelector("#stop-button");
+        stop.onclick = function(e) {
+          t.stop();
+        };
+
+        var send = this.querySelector("#send-button");
+        send.onclick = function(e) {
+          t.send();
+        };
+      },
+      send: function() {
+        // TODO: Send the data to *pitcher*.
+      },
+      play: function() {
+        window.setInterval(samplerAudio.play, 2000);
+      },
+      stop: function() {
+        window.stopInterval(samplerAudio.play);
+      },
+      record: function() {
+        if (!this.audioStream)
+          console.log("Error: We don't have an audio stream.");
+        this.samplerAudio = window.URL.createObjectURL(this.audioStream);
+      },
+      defaultListener: 'sample',
+      broadcasts: ['update'],
+      listeners: {}
+    });
+  </script>
+</element>
