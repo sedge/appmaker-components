@@ -1,9 +1,12 @@
 <element name="app-sampler">
   <template>
     <!-- TODO: Get our own CSS file. -->
-    <link rel="stylesheet" href="{{ASSET_HOST}}/assets/style/app-counter.css">
+    <link rel="stylesheet" href="{{ASSET_HOST}}/assets/style/app-sampler.css">
     <div class="sampler">
-      <span class="sample-wrapper"><span class="sample">Record a Sound!</span><span class="sample-label"></span></span>
+      <audio id="sampler-audio" class="sampler-audio"></audio>
+      <button id="record-button" type="button">Record</button>
+      <button id="stop-button" type="button">Stop</button>
+      <button id="send-button" type="button">Send</button>
     </div>
   </template>
   <description>
@@ -18,24 +21,54 @@
   <script type="text/ceci">
     Ceci(this, {
       init: function (params) {
-        // TODO: Possibly init file stream or file here.
+        this.audioStream = null;
+
+        navigator.mozGetUserMedia({
+          audio: true,
+          video: false
+        },
+        function(localAudioStream) {
+          this.audioStream = localAudioStream;
+        },
+        function(err) {
+          console.log("Error getting the audio stream: " + err.message);
+        });
+
+        this.samplerAudio = this.querySelector("#sampler-audio");
+
+        var t = this,
+            recordButton = this.querySelector("#record-button");
+        recordButton.onclick = function(e) {
+          t.record();
+        };
+
+        var stop = this.querySelector("#stop-button");
+        stop.onclick = function(e) {
+          t.stop();
+        };
+
+        var send = this.querySelector("#send-button");
+        send.onclick = function(e) {
+          t.send();
+        };
       },
-      updateDisplay: function() {
-        // TODO: Update display with pic or something of sample.
+      send: function() {
+        // TODO: Send the data to *pitcher*.
       },
-      editable: {
-        // TODO: SOMETHING?!
+      play: function() {
+        window.setInterval(samplerAudio.play, 2000);
       },
-      setLabel: function (value){
-        // TODO: Set label for stuff!
+      stop: function() {
+        window.stopInterval(samplerAudio.play);
+      },
+      record: function() {
+        if (!this.audioStream)
+          console.log("Error: We don't have an audio stream.");
+        this.samplerAudio = window.URL.createObjectURL(this.audioStream);
       },
       defaultListener: 'sample',
       broadcasts: ['update'],
-      listeners: {
-        sample: function (listener,channel) {
-          // TODO: Grab sample and save, etc.
-        }
-      }
+      listeners: {}
     });
   </script>
 </element>
