@@ -1,0 +1,41 @@
+<element name="app-sampler">
+  <template>
+    <!-- TODO: Get our own CSS file. -->
+    <link rel="stylesheet" href="{{ASSET_HOST}}/assets/style/app-counter.css">
+    <div class="sampler">
+      <span class="sample-wrapper"><span class="sample">Record a Sound!</span><span class="sample-label"></span></span>
+    </div>
+  </template>
+  <description>
+    Samples sound from your device.
+  </description>
+  <thumbnail>
+    <!-- TODO: Get our own picture. -->
+    <img src="{{ASSET_HOST}}/assets/images/thumbnails/app-button.png" />
+  </thumbnail>
+  <script type="text/flathead">
+  </script>
+  <script type="text/ceci">
+    Ceci(this, {
+      init: function (params) {
+        // TODO: Possibly init file stream or file here.
+      },
+      updateDisplay: function() {
+        // TODO: Update display with pic or something of sample.
+      },
+      editable: {
+        // TODO: SOMETHING?!
+      },
+      setLabel: function (value){
+        // TODO: Set label for stuff!
+      },
+      defaultListener: 'sample',
+      broadcasts: ['update'],
+      listeners: {
+        sample: function (listener,channel) {
+          // TODO: Grab sample and save, etc.
+        }
+      }
+    });
+  </script>
+</element>
